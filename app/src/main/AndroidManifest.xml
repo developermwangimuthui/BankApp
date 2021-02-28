@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BankApp">
-        <activity android:name=".FingerPrint"></activity>
+        <activity android:name=".AddMoney"></activity>
+        <activity android:name=".FingerPrint" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

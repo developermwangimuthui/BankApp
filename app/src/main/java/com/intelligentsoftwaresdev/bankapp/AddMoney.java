@@ -12,15 +12,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivitySendMoneyBinding;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivitySignUPBinding;
+import com.intelligentsoftwaresdev.bankapp.databinding.ActivityAddMoneyBinding;
+import com.intelligentsoftwaresdev.bankapp.databinding.ActivityPayBillBinding;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SendMoney extends AppCompatActivity {
+public class AddMoney extends AppCompatActivity {
+    ActivityAddMoneyBinding b;
 
-    ActivitySendMoneyBinding b;
+
     private FirebaseAuth mAuth;
     private String TAG = "";
     private String userId = "";
@@ -29,42 +30,32 @@ public class SendMoney extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mAuth = FirebaseAuth.getInstance();
-        b = DataBindingUtil.setContentView(this, R.layout.activity_send_money);
+        b = DataBindingUtil.setContentView(this, R.layout.activity_add_money);
         b.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMoney();
+                addMoney();
             }
         });
     }
 
-    private void sendMoney() {
-        String bank = b.bank.getText().toString().trim();
-        String recieverAccountNumber = b.recieverNumber.getText().toString().trim();
-        String mobileNumber = b.mobilenumber.getText().toString().trim();
+    private void addMoney() {
+
         String amount = b.amount.getText().toString().trim();
-        if (TextUtils.isEmpty(recieverAccountNumber)) {
-            b.recieverNumber.setError("Account Number is required");
-        } else if (TextUtils.isEmpty(amount)) {
-            b.amount.setError("Amount is required");
-        } else if (TextUtils.isEmpty(mobileNumber)) {
-            b.mobilenumber.setError("Phone is Required");
-        } else if (TextUtils.isEmpty(bank)) {
-            b.bank.setError("Bank is Required");
+        if (TextUtils.isEmpty(amount)) {
+            b.amount.setError("Account Number is required");
         } else {
             DocumentReference documentReference = db.collection("transactions").document(mAuth.getUid());
             Map<String, Object> transaction = new HashMap<>();
-            transaction.put("type", "sendMoney");
+            transaction.put("type", "paybill");
             transaction.put("amount", amount);
-            transaction.put("bank", bank);
-            transaction.put("recieverAccountNumber", recieverAccountNumber);
-            transaction.put("mobileNumber", mobileNumber);
             documentReference.set(transaction).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
 
-                    Toast.makeText(SendMoney.this, "Money Send Succesfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddMoney.this, "Bill Paid Succesfully", Toast.LENGTH_SHORT).show();
                 }
             });
 
