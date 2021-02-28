@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,11 +80,12 @@
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="center_vertical"
-                                        android:text="My  Wallet"
+                                        android:text="My  Walet Balance"
                                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                                         android:textColor="@color/light_blue_100"
                                         app:fontFamily="sans-serif-medium" />
                                     <ImageButton
+                                        android:id="@+id/accIB"
                                         android:layout_width="@dimen/spacing_xmlarge"
                                         android:layout_height="@dimen/spacing_xmlarge"
                                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -99,14 +101,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="My Balance"
+                                    android:text="RM"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                                     android:textColor="@color/light_blue_50" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="24.561"
+                                    android:text="0.00"
                                     android:id="@+id/balance"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
                                     android:textColor="@android:color/white"
@@ -322,355 +324,13 @@
                             android:textColor="@color/grey_40"
                             app:fontFamily="sans-serif-medium" />
 
-                        <androidx.cardview.widget.CardView
+
+
+                        <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/spacing_large">
-
-                                <RelativeLayout
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginTop="1dp">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_10"
-                                        app:srcCompat="@drawable/shape_circle" />
-
-                                    <ImageView
-                                        android:layout_width="15dp"
-                                        android:layout_height="15dp"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_40"
-                                        app:srcCompat="@drawable/ic_arrow_downward" />
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="@dimen/spacing_middle"
-                                    android:layout_height="0dp" />
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Receive"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                                        android:textColor="@color/indigo_900" />
-
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="10 jan 2018 11:20"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="end"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="1.639 ETH"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                                        android:textColor="@color/light_blue_500" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="4.38 USD"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/spacing_large">
-
-                                <RelativeLayout
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginTop="1dp">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_10"
-                                        app:srcCompat="@drawable/shape_circle" />
-
-                                    <ImageView
-                                        android:layout_width="15dp"
-                                        android:layout_height="15dp"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_40"
-                                        app:srcCompat="@drawable/ic_arrow_downward" />
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="@dimen/spacing_middle"
-                                    android:layout_height="0dp" />
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="end"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="1.947 ETH"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                                        android:textColor="@color/light_blue_500" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="5.204 USD"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/spacing_large">
-
-                                <RelativeLayout
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginTop="1dp">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_10"
-                                        app:srcCompat="@drawable/shape_circle" />
-
-                                    <ImageView
-                                        android:layout_width="15dp"
-                                        android:layout_height="15dp"
-                                        android:layout_centerInParent="true"
-                                        android:rotation="180"
-                                        android:tint="@color/grey_40"
-                                        app:srcCompat="@drawable/ic_arrow_downward" />
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="@dimen/spacing_middle"
-                                    android:layout_height="0dp" />
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Sent"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                                        android:textColor="@color/indigo_900" />
-
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="10 jan 2018 07:38"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="end"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2.165 ETH"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                                        android:textColor="@color/light_blue_500" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="8.42 USD"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="2dp"
-                            app:cardUseCompatPadding="true">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="@dimen/spacing_large">
-
-                                <RelativeLayout
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_marginTop="1dp">
-
-                                    <ImageView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_centerInParent="true"
-                                        android:tint="@color/grey_10"
-                                        app:srcCompat="@drawable/shape_circle" />
-
-                                    <ImageView
-                                        android:layout_width="15dp"
-                                        android:layout_height="15dp"
-                                        android:layout_centerInParent="true"
-                                        android:rotation="180"
-                                        android:tint="@color/grey_40"
-                                        app:srcCompat="@drawable/ic_arrow_downward" />
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="@dimen/spacing_middle"
-                                    android:layout_height="0dp" />
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Sent"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                                        android:textColor="@color/indigo_900" />
-
-
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Receive"
-                                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                                            android:textColor="@color/indigo_900" />
-
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="10 jan 2018 08:55"
-                                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                            android:textColor="@color/grey_40" />
-
-                                    </LinearLayout>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="10 jan 2018 07:20"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="end"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="2.035 ETH"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                                        android:textColor="@color/light_blue_500" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="8.12 USD"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                                        android:textColor="@color/grey_40" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </androidx.cardview.widget.CardView>
+                            android:id="@+id/recycler"
+                            tools:listitem="@layout/item_transaction"/>
 
                         <View
                             android:layout_width="match_parent"

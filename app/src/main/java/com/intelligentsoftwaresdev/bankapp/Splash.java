@@ -10,20 +10,21 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 public class Splash extends AppCompatActivity {
 
     ProgressBar splashProgress;
     int SPLASH_TIME = 2000; //This is 3 seconds
-
+    private static final String TAG = "Splash";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
+        Log.e(TAG, "onCreate: " );
         //This is additional feature, used to run a progress bar
         splashProgress = findViewById(R.id.splashProgress);
         playProgress();

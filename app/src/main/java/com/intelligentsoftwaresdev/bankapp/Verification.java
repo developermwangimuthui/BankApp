@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class Verification extends AppCompatActivity {
     ActivityVerificationBinding b;
     private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +35,18 @@ public class Verification extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(Verification.this, FingerPrint.class));
             }
-        }); b.requestOpt.setOnClickListener(new View.OnClickListener() {
+        });
+        b.requestOpt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
     }
+
     private void verifyCode(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signInWithCredential(credential);
+//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+//        signInWithCredential(credential);
     }
 
     private void signInWithCredential(PhoneAuthCredential credential) {
@@ -59,18 +63,19 @@ public class Verification extends AppCompatActivity {
 
                         } else {
                             Toast.makeText(Verification.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                           b.progressbar.setVisibility(View.GONE);
+                            b.progressbar.setVisibility(View.GONE);
                         }
                     }
                 });
     }
+
     private void sendVerificationCode(String number) {
         b.progressbar.setVisibility(View.VISIBLE);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,
                 60,
                 TimeUnit.SECONDS,
-                TaskExecutors.MAIN_THREAD,
+                this,
                 mCallBack
         );
 
@@ -83,20 +88,22 @@ public class Verification extends AppCompatActivity {
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            verificationId = s;
+//            verificationId = s;
         }
-    @Override
-    public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-        String code = phoneAuthCredential.getSmsCode();
-        if (code != null) {
-            editText.setText(code);
-            verifyCode(code);
+
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            String code = phoneAuthCredential.getSmsCode();
+            if (code != null) {
+//                editText.setText(code);
+                verifyCode(code);
+            }
         }
-    }
 
-    @Override
-    public void onVerificationFailed(FirebaseException e) {
-        Toast.makeText(Verification.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(Verification.this, e.getMessage(), Toast.LENGTH_LONG).show();
 
-    }
+        }
+    };
 }

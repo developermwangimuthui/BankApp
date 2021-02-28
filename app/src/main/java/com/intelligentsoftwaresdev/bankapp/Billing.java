@@ -23,48 +23,51 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityPayBillBinding;
+import com.intelligentsoftwaresdev.bankapp.databinding.ActivitySendMoneyBinding;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SendMoney extends AppCompatActivity {
-    ActivityPayBillBinding b;
+public class Billing extends AppCompatActivity {
 
+    ActivitySendMoneyBinding b;
     private FirebaseAuth mAuth;
     private String TAG = "";
     private String userId = "";
-    private String bank = "";
-    private  Integer balance;
+    private String amount = "";
+    private Integer balance;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-        b = DataBindingUtil.setContentView(this,R.layout.activity_pay_bill);
+        b = DataBindingUtil.setContentView(this, R.layout.activity_send_money);
         initComponent();
-        getDataFirestore();
+
         b.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paybill();
+                sendMoney();
             }
         });
     }
+
     private void initComponent() {
 
 
-        (findViewById(R.id.bank)).setOnClickListener(new View.OnClickListener() {
+        (findViewById(R.id.company)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BankDialog(v);
+                showCompanyDialog(v);
             }
         });
 
     }
-    private void BankDialog(final View v) {
+
+    private void showStateDialog(final View v) {
         final String[] array = new String[]{
-                "Maybank", "CIMB", "RHB", "RHB", "HSBC Bank", "Standard Chartered Bank."
+                "CIMB", "Affin Bank", "RHB", "Hong Leong Bank", "AmBank", "Standard Chartered Bank"
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Bank");
@@ -78,25 +81,49 @@ public class SendMoney extends AppCompatActivity {
         builder.show();
     }
 
-    private void paybill() {
-        String amount = b.amount.getText().toString().trim();
-         bank = b.bank.getText().toString().trim();
-        if (TextUtils.isEmpty(amount)) {
-            b.amount.setError("Account Number is required");
-        } else if (TextUtils.isEmpty(bank)) {
-            b.bank.setError("Bank  is required");
+    private void showCompanyDialog(final View v) {
+        final String[] array = new String[]{
+                "TNB Malaysia", "TeleKom Malasia", "RHB", "Hong Leong Bank", "AmBank", "Standard Chartered Bank"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Bank");
+        builder.setSingleChoiceItems(array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(array[i]);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendMoney() {
+        String recieverAccountNumber = b.accountNumber.getText().toString().trim();
+        String company = b.company.getText().toString().trim();
+        String referenceNote = b.referenceNote.getText().toString().trim();
+        amount = b.amount.getText().toString().trim();
+        if (TextUtils.isEmpty(recieverAccountNumber)) {
+            b.accountNumber.setError("Account Number is required");
+        } else if (TextUtils.isEmpty(amount)) {
+            b.amount.setError("Amount is required");
+        } else if (TextUtils.isEmpty(referenceNote)) {
+            b.referenceNote.setError("ReferenceNote is Required");
+        } else if (TextUtils.isEmpty(company)) {
+            b.company.setError("Company is Required");
         } else {
             DocumentReference documentReference = db.collection("transactions").document(mAuth.getUid());
             Map<String, Object> transaction = new HashMap<>();
-            transaction.put("type", "sendmoney");
+            transaction.put("type", "billing");
             transaction.put("amount", amount);
-            transaction.put("bank", bank);
+            transaction.put("company", company);
+            transaction.put("recieverAccountNumber", recieverAccountNumber);
+            transaction.put("referenceNote", referenceNote);
             documentReference.set(transaction).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
 
+                    Toast.makeText(Billing.this, "Money Send Succesfully", Toast.LENGTH_SHORT).show();
                     updateBalance();
-                    Toast.makeText(SendMoney.this, "Bill Paid Succesfully", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -106,25 +133,20 @@ public class SendMoney extends AppCompatActivity {
     }
 
     private void updateBalance() {
-
-      String  amount = b.amount.getText().toString().trim();
-        Log.e(TAG, "updateBalance: "+amount);
-        Log.e(TAG, "updateBalance: "+balance);
-        Toast.makeText(this, amount, Toast.LENGTH_SHORT).show();
-        Integer newbalance = balance - (Integer.parseInt(amount));
+        getDataFirestore();
+        Integer newbalance = balance - Integer.parseInt(amount);
 //        register user details into firestore
-        DocumentReference documentReference = db.collection("users").document(mAuth.getUid());
+        DocumentReference documentReference = db.collection("users").document(userId);
         Map<String, Object> user = new HashMap<>();
         user.put("balance", newbalance);
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "onSuccess: User created succesfully");
-                Toast.makeText(SendMoney.this, "Bill Paid", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SendMoney.this,MainActivity.class));
+                Toast.makeText(Billing.this, "Money Sent", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Billing.this, MainActivity.class));
             }
         });
-
 
 
     }
@@ -143,9 +165,9 @@ public class SendMoney extends AppCompatActivity {
 //                                Toast.makeText(MainActivity.this, "Firestore"+document.getData(), Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "DocumentSnapshot data: " + document.getData());//see log below
                                 Map<String, Object> myMap = (Map<String, Object>) document.getData();
-                                Log.e(TAG, "onComplete: "+myMap.toString() );
-                                double sbalance = (double) myMap.get("balance");
-                                balance =((int)Math.round(sbalance));
+                                Log.e(TAG, "onComplete: " + myMap.toString());
+                                String sbalance = String.valueOf((double) myMap.get("balance"));
+                                balance = Integer.parseInt(sbalance);
                                 Log.e(TAG, "onComplete: " + balance);
                             } else {
                                 Log.e(TAG, "No such document");
@@ -158,14 +180,14 @@ public class SendMoney extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SendMoney.this, "Firestore"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Billing.this, "Firestore" + e.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 })
                 .addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-                        Toast.makeText(SendMoney.this, "cancelled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Billing.this, "cancelled", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

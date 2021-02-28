@@ -104,6 +104,8 @@ public class SignUP extends AppCompatActivity {
                                 user.put("footBallTeam", footBallTeam);
                                 user.put("city", city);
                                 user.put("balance", balance);
+                                user.put("email", email);
+                                user.put("password", password);
                                 documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

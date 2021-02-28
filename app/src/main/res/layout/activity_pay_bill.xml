@@ -37,7 +37,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/biil"
+                    android:id="@+id/bank"
                 style="@style/EditText.Flat.Grey"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -47,7 +47,7 @@
                 android:drawableRight="@drawable/ic_expand_arrow"
                 android:editable="false"
                 android:focusable="false"
-                android:hint="Select Bill Type"
+                android:hint="Select Bank "
                 android:paddingLeft="@dimen/spacing_middle"
                 android:paddingRight="@dimen/spacing_middle" />
             <EditText
@@ -55,9 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/spacing_large"
+                android:inputType="number"
                 android:background="@drawable/edit_text_round_bg_white"
                 android:hint="Amount"
                 android:id="@+id/amount"
+
                 android:paddingLeft="@dimen/spacing_middle"
                 android:paddingRight="@dimen/spacing_middle" />
 
