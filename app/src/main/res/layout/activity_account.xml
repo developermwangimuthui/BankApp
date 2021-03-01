@@ -29,11 +29,6 @@
             android:layout_margin="@dimen/spacing_xlarge"
             android:visibility="gone" />
 
-        <ScrollView
-            android:id="@+id/login_form"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
 
             <RelativeLayout
                 android:id="@+id/email_login_form"
@@ -48,52 +43,141 @@
                     android:layout_centerInParent="true"
                     android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Email">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/emailEd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <com.google.android.material.textfield.TextInputLayout
+                        android:text="Select Daily Limit"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+                    <EditText
+                        android:id="@+id/limit"
+                        style="@style/EditText.Flat.Grey"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Phone Number"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:singleLine="true" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="45dp"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:drawableEnd="@drawable/ic_expand_arrow"
+                        android:drawableRight="@drawable/ic_expand_arrow"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="'eg RM 1000' "
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update Your Email"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+                    <EditText
+                        android:id="@+id/email"
+                        style="@style/EditText.Flat.Grey"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="45dp"
+                        android:inputType="textEmailAddress"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:hint=""
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle" />
 
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Password"
-                            android:id="@+id/password"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:singleLine="true" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update Phone Number"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <EditText
+                        android:id="@+id/phone"
+                        style="@style/EditText.Flat.Grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:hint=""
+                        android:inputType="phone"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle" />
+
+
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave Passwords blank if you still want to use the old Password"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Update Password"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <EditText
+                        android:id="@+id/password"
+                        style="@style/EditText.Flat.Grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:hint="Password"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle" />         <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Confirm Password"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/red_800" />
+                    <View
+                        android:layout_width="@dimen/spacing_large"
+                        android:layout_height="2dp" />
+
+                    <EditText
+                        android:id="@+id/cpassword"
+                        style="@style/EditText.Flat.Grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:background="@drawable/edit_text_round_bg_white"
+                        android:hint="Confirm Password"
+                        android:paddingLeft="@dimen/spacing_middle"
+                        android:paddingRight="@dimen/spacing_middle" />
 
 
 
@@ -114,7 +198,7 @@
 
             </RelativeLayout>
 
-        </ScrollView>
+
 
     </LinearLayout>
 

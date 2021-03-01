@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/overlay_light_90"
-    tools:context=".Splash">
+    tools:context=".activity.SplashActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

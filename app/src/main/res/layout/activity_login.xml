@@ -140,6 +140,31 @@
 
         <View
             android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_middle" />    <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/spacing_medium" />
+
+        <LinearLayout
+            android:id="@+id/forgotPassTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot Password?"
+                android:id="@+id/forgotPass"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="@color/blue_grey_400" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
             android:layout_height="@dimen/spacing_xlarge" />
 
     </LinearLayout>
