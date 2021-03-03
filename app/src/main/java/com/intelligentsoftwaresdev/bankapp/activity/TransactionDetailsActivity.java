@@ -88,26 +88,31 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         if (accountNumber.isEmpty()) {
             b.LaccountNumber.setVisibility(View.GONE);
         } else {
+            b.LaccountNumber.setVisibility(View.VISIBLE);
             b.accountNumber.setText(accountNumber);
         }
         if (bank.isEmpty()) {
             b.Lbank.setVisibility(View.GONE);
         } else {
+            b.Lbank.setVisibility(View.VISIBLE);
             b.bank.setText(bank);
         }
         if (company.isEmpty()) {
             b.Lcompany.setVisibility(View.GONE);
         } else {
+            b.Lcompany.setVisibility(View.VISIBLE);
             b.company.setText(company);
         }
         if (referenceNote.isEmpty()) {
             b.LreferenceNote.setVisibility(View.GONE);
         } else {
+            b.LreferenceNote.setVisibility(View.VISIBLE);
             b.referenceNote.setText(referenceNote);
         }
         if (beneficiary.isEmpty()) {
             b.LbeneficiaryName.setVisibility(View.GONE);
         } else {
+            b.LbeneficiaryName.setVisibility(View.VISIBLE);
             b.beneficiaryName.setText(beneficiary);
         }
 

@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
                 TransactionModel transactions = documentSnapshot.toObject(TransactionModel.class);
                 String id = documentSnapshot.getId();
                 String path = documentSnapshot.getReference().getPath();
-                Toast.makeText(MainActivity.this,
-                        "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
                 intent.putExtra("documentID", id);
                 startActivity(intent);

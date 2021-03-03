@@ -31,6 +31,7 @@ public class TransactionAdapter extends FirestoreRecyclerAdapter<TransactionMode
         Log.e(TAG, "onBindViewHolder: " + model.getType());
         holder.tvType.setText(model.getType());
         holder.tvAmount.setText( "RM " + model.getAmount());
+        holder.recyclerbeneficiaryName.setText( model.getBeneficiary());
     }
 
     @NonNull
@@ -43,13 +44,13 @@ public class TransactionAdapter extends FirestoreRecyclerAdapter<TransactionMode
     class TransactionHolder extends RecyclerView.ViewHolder {
         TextView tvType;
         TextView tvAmount;
-        TextView tvTransactionDate;
+        TextView recyclerbeneficiaryName;
 
         public TransactionHolder(@NonNull View itemView) {
             super(itemView);
             tvType = itemView.findViewById(R.id.rvType);
             tvAmount = itemView.findViewById(R.id.rvAmount);
-            tvTransactionDate = itemView.findViewById(R.id.transactionDate);
+            recyclerbeneficiaryName = itemView.findViewById(R.id.recyclerbeneficiaryName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

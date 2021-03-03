@@ -32,6 +32,7 @@ import com.intelligentsoftwaresdev.bankapp.R;
 import com.intelligentsoftwaresdev.bankapp.databinding.ActivityBillingBinding;
 import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,7 +140,12 @@ public class BillingActivity extends AppCompatActivity {
         // creating a collection reference
         // for our Firebase Firetore database.
         // adding our data to our courses object class.
-        TransactionModel transactions = new TransactionModel(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
+
+        double sentAmount = Double.parseDouble(amount);
+        DecimalFormat df = new DecimalFormat("#.00");
+        String sentTwoDPAMount = df.format(sentAmount);
+        Log.e(TAG, "Sent Amount "+sentTwoDPAMount );
+        TransactionModel transactions = new TransactionModel(type, sentTwoDPAMount, bank, accountNumber, company, referenceNote,beneficiary);
 
         // below method is use to add data to Firebase Firestore.
         collectionReference.add(transactions).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -151,7 +157,6 @@ public class BillingActivity extends AppCompatActivity {
 
                 Toast.makeText(BillingActivity.this, "Kindly Verify to Continue", Toast.LENGTH_SHORT).show();
 
-//                progress_bar.setVisibility(View.GONE);
                 startActivity(new Intent(BillingActivity.this, VerificationActivity.class));
                 finish();
             }
@@ -168,10 +173,11 @@ public class BillingActivity extends AppCompatActivity {
     private void updateBalance(String type,String amount,String bank,String accountNumber,String company,String referenceNote,String beneficiary) {
 //convert the Strings to
         Log.e(TAG, "Balance: " + balance);
-        double intBalance = Double.parseDouble(balance);
-        double inAmount = Double.parseDouble(amount);
+        double intBalance;
+        intBalance = Double.parseDouble(balance);
         double indailyLimit = Double.parseDouble(dailyLimit);
         Log.e(TAG, "DailyLimit: " + indailyLimit);
+        double inAmount = Double.parseDouble(amount);
         Log.e(TAG, "Amount: " + inAmount);
         if (inAmount >= indailyLimit) {
 
@@ -186,8 +192,8 @@ public class BillingActivity extends AppCompatActivity {
             } else {
 //            computations
                 double intnewbalance = intBalance - inAmount;
-                double twoDPnewbalance = Math.floor(intnewbalance * 100) / 100;
-                String strNewBalance = String.valueOf(twoDPnewbalance);
+                DecimalFormat df = new DecimalFormat("#.00");
+                String strNewBalance = df.format(intnewbalance);
                 Log.e(TAG, "updateBalance: NewBalance"+strNewBalance);
 //            update Balance in Firestore
                 Map<String, Object> user = new HashMap<>();

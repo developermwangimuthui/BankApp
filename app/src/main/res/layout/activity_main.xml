@@ -167,7 +167,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Send Money"
+                                    android:text="Fund Transfer"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
                                     android:textColor="@color/indigo_900"
                                     app:fontFamily="sans-serif-medium" />
