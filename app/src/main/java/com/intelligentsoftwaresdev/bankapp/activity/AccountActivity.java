@@ -1,11 +1,5 @@
 package com.intelligentsoftwaresdev.bankapp.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.intelligentsoftwaresdev.bankapp.R;
 import com.intelligentsoftwaresdev.bankapp.databinding.ActivityAccountBinding;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityMainBinding;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,49 +69,106 @@ public class AccountActivity extends AppCompatActivity {
                 b.limit.setError("Choose Your Daily Limit");
                 b.limit.requestFocus();
             } else {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.updateEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.e(TAG, "User email address updated.");
-                                }
-                            }
-                        });
+
                 if (!password.isEmpty() && !cpassword.isEmpty()) {
-                    if (password == cpassword) {
-                        b.password.setError("Passwords do not Match");
-                        b.cpassword.setError("Passwords do not Match");
-                        Toast.makeText(this, "Passwords do not Match", Toast.LENGTH_SHORT).show();
-                    } else {
-                        user.updatePassword(password)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.e(TAG, "Password Updated");
+                    if (password.equals(cpassword)) {
+                        float passStrength = getRating(password);
+                        Log.e(TAG, "password Strength " + passStrength);
+                        if (passStrength < 4.0) {
+
+                            b.password.setError("Kindly Use a Password with Alphanumerics and Special Characters");
+
+                            Toast.makeText(this, "Kindly Use a Password with Alphanumerics and Special Characters", Toast.LENGTH_LONG).show();
+                        } else {
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            user.updateEmail(email)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.e(TAG, "User email address updated.");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                            user.updatePassword(password)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.e(TAG, "Password Updated");
+                                            }
+                                        }
+                                    });
+                            //Updating a user Data Firestore
+                            Map<String, Object> updatedUser = new HashMap<>();
+                            updatedUser.put("email", email);
+                            updatedUser.put("dailyLimit", dailyLimit);
+                            updatedUser.put("phone", phone);
+                            db.collection("users").document(mAuth.getUid())
+                                    .set(updatedUser, SetOptions.merge());
+                            updateUI(email, phone, dailyLimit);
+
+                            Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(AccountActivity.this, VerificationActivity.class));
+                            finish();
+                        }
+
+                    }else{
+
+                        Toast.makeText(this, "Passwords Do not Match", Toast.LENGTH_LONG).show();
+                        return;
                     }
+
+                } else {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    user.updateEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.e(TAG, "User email address updated.");
+                                    }
+                                }
+                            });
+
+                    //Updating a user Data Firestore
+                    Map<String, Object> updatedUser = new HashMap<>();
+                    updatedUser.put("email", email);
+                    updatedUser.put("dailyLimit", dailyLimit);
+                    updatedUser.put("phone", phone);
+                    db.collection("users").document(mAuth.getUid())
+                            .set(updatedUser, SetOptions.merge());
+                    updateUI(email, phone, dailyLimit);
+                    Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(AccountActivity.this, VerificationActivity.class));
+                    finish();
+
                 }
-
-
-                //Updating a user Data Firestore
-                Map<String, Object> updatedUser = new HashMap<>();
-                updatedUser.put("email", email);
-                updatedUser.put("dailyLimit", dailyLimit);
-                updatedUser.put("phone", phone);
-                db.collection("users").document(mAuth.getUid())
-                        .set(updatedUser, SetOptions.merge());
-                updateUI(email,phone,dailyLimit);
-
-
             }
-            Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
+
 
         });
+    }
+
+    private float getRating(String password) throws IllegalArgumentException {
+        if (password == null) {
+            throw new IllegalArgumentException();
+        }
+        int passwordStrength = 0;
+        if (password.length() > 5) {
+            passwordStrength++;
+        } // minimal pw length of 6
+        if (password.toLowerCase() != password) {
+            passwordStrength++;
+        } // lower and upper case
+        if (password.length() > 8) {
+            passwordStrength++;
+        } // good pw length of 9+
+        int numDigits = Tools.getNumberDigits(password);
+        if (numDigits > 0 && numDigits != password.length()) {
+            passwordStrength++;
+        } // contains digits and non-digits
+        return (float) passwordStrength;
     }
 
     private void initComponent() {
@@ -124,6 +178,12 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showLimitDialog(v);
+            }
+        });
+        (findViewById(R.id.wlimit)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWLimitDialog(v);
             }
         });
 
@@ -147,6 +207,22 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void showLimitDialog(final View v) {
+        final String[] array = new String[]{
+                "1000", "2000", "3000"
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Daily Limit");
+        builder.setSingleChoiceItems(array, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ((EditText) v).setText(array[i]);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void showWLimitDialog(final View v) {
         final String[] array = new String[]{
                 "1000", "2000", "3000"
         };
@@ -200,7 +276,7 @@ public class AccountActivity extends AppCompatActivity {
         Log.e(TAG, "updateUI: Called");
         b.limit.setText(dailLimit);
         b.email.setText(email);
-        b.phone.setText(phone);
+        b.phone.setText(phone.substring(3));
 
     }
 
@@ -216,6 +292,7 @@ public class AccountActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             Toast.makeText(this, "Home ", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(AccountActivity.this, MainActivity.class));
+            finish();
         } else if (item.getItemId() == R.id.account) {
             Toast.makeText(this, "You are in Accounts", Toast.LENGTH_SHORT).show();
 

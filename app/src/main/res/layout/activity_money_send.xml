@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edit_text_round_bg_white"
                 android:hint="eg 'RM 50'"
                 android:id="@+id/amount"
@@ -108,6 +108,54 @@
 
             <View
                 android:layout_width="@dimen/spacing_large"
+                android:layout_height="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Reference Note"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="@color/red_800" />
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="2dp" />
+
+            <EditText
+                android:id="@+id/referenceNote"
+                style="@style/EditText.Flat.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:background="@drawable/edit_text_round_bg_white"
+                android:hint="Reference Note"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Beneficiary"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="@color/red_800" />
+            <View
+                android:layout_width="@dimen/spacing_large"
+                android:layout_height="2dp" />
+
+            <EditText
+                android:id="@+id/beneficiary"
+                style="@style/EditText.Flat.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:background="@drawable/edit_text_round_bg_white"
+                android:hint="Beneficiary"
+                android:paddingLeft="@dimen/spacing_middle"
+                android:paddingRight="@dimen/spacing_middle" />
+
+            <View
+                android:layout_width="@dimen/spacing_large"
                 android:layout_height="100dp" />
 
             <Button
@@ -125,7 +173,15 @@
 
         </LinearLayout>
 
+
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </LinearLayout>
 </layout>

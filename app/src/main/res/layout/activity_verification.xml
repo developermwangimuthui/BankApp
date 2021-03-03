@@ -88,17 +88,26 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Resend Otp"
                     android:gravity="center"
+                    android:text="Request Otp"
                     android:textColor="@color/colorPrimaryDark" />
 
+<!--                <androidx.appcompat.widget.AppCompatButton-->
+<!--                    android:id="@+id/resend"-->
+<!--                    style="@style/Widget.AppCompat.Button.Borderless"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Resend Otp"-->
+<!--                    android:textColor="@color/colorPrimaryDark" />-->
+
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/verifyOtp"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="VERIFY"
-                    android:id="@+id/verifyOtp"
                     android:textColor="@color/colorPrimaryDark" />
 
                 <View

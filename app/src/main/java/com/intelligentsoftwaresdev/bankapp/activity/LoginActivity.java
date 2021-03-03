@@ -62,8 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = b.password.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
             b.email.setError("Email is Required");
+            b.email.requestFocus();
         } else if (TextUtils.isEmpty(password)) {
-
+            b.password.requestFocus();
             b.password.setError("Password is required");
         } else {
 
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
 
         } else {
-            Toast.makeText(this, "SignIn Failed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Kindly SignIn!", Toast.LENGTH_LONG).show();
         }
 
     }

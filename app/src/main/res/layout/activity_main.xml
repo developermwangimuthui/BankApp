@@ -15,39 +15,119 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nested_scroll_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"
-                android:scrollingCache="true">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/toolbar"></include>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/spacing_large"
+                    android:paddingRight="@dimen/spacing_large">
 
-                    <com.google.android.material.appbar.AppBarLayout
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/red_800"
+                        app:cardCornerRadius="6dp"
+                        app:cardElevation="2dp"
+                        app:cardUseCompatPadding="true">
 
-                        <include layout="@layout/toolbar"></include>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                    </com.google.android.material.appbar.AppBarLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/spacing_xmlarge"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
 
+                                <View
+                                    android:layout_width="@dimen/spacing_large"
+                                    android:layout_height="0dp" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:text="Account Number"
+                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:textColor="@color/light_blue_100"
+                                    app:fontFamily="sans-serif-medium" />
+
+                                <TextView
+                                    android:id="@+id/accountNumber"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="center_vertical"
+                                    android:text="My  Wallet Balance"
+                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:textColor="@color/light_blue_100"
+                                    app:fontFamily="sans-serif-medium" />
+
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/spacing_middle" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Balance"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                                android:textColor="@color/light_blue_50" />
+
+
+                            <TextView
+                                android:id="@+id/balance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00"
+                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
+                                android:textColor="@android:color/white"
+                                app:fontFamily="sans-serif-medium" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/spacing_mxlarge" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_small" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/spacing_large"
-                        android:paddingRight="@dimen/spacing_large">
+                        android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
+                            android:id="@+id/sendMoney"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/red_800"
+                            android:layout_weight="1"
                             app:cardCornerRadius="6dp"
                             app:cardElevation="2dp"
                             app:cardUseCompatPadding="true">
@@ -55,226 +135,153 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/spacing_large">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/spacing_xmlarge"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal">
+                                <RelativeLayout
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp">
 
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true"
+                                        android:tint="@color/grey_10"
+                                        app:srcCompat="@drawable/shape_circle" />
 
-                                    <View
-                                        android:layout_width="@dimen/spacing_large"
-                                        android:layout_height="0dp" />
+                                    <ImageView
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:layout_centerInParent="true"
+                                        android:rotation="180"
+                                        android:tint="@color/grey_40"
+                                        app:srcCompat="@drawable/ic_arrow_downward" />
 
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center_vertical"
-                                        android:text="My  Walet Balance"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                        android:textColor="@color/light_blue_100"
-                                        app:fontFamily="sans-serif-medium" />
-
-
-                                </LinearLayout>
+                                </RelativeLayout>
 
                                 <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="@dimen/spacing_middle" />
+                                    android:layout_width="@dimen/spacing_mlarge"
+                                    android:layout_height="0dp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="RM"
+                                    android:text="Send Money"
                                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                    android:textColor="@color/light_blue_50" />
-
-
-                                <TextView
-                                    android:id="@+id/balance"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="0.00"
-                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Display1"
-                                    android:textColor="@android:color/white"
+                                    android:textColor="@color/indigo_900"
                                     app:fontFamily="sans-serif-medium" />
-
-                                <View
-                                    android:layout_width="0dp"
-                                    android:layout_height="@dimen/spacing_mxlarge" />
 
                             </LinearLayout>
 
                         </androidx.cardview.widget.CardView>
 
                         <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/spacing_small" />
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="0dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/payBills"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            app:cardCornerRadius="6dp"
+                            app:cardElevation="2dp"
+                            app:cardUseCompatPadding="true">
 
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="0dp"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:cardCornerRadius="6dp"
-                                app:cardElevation="2dp"
-                                android:id="@+id/sendMoney"
-                                app:cardUseCompatPadding="true">
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/spacing_large">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
+                                <RelativeLayout
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_centerInParent="true"
+                                        android:tint="@color/grey_10"
+                                        app:srcCompat="@drawable/shape_circle" />
+
+                                    <ImageView
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:layout_centerInParent="true"
+                                        android:tint="@color/grey_40"
+                                        app:srcCompat="@drawable/img_money" />
+
+                                </RelativeLayout>
+
+                                <View
+                                    android:layout_width="@dimen/spacing_mlarge"
+                                    android:layout_height="0dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:padding="@dimen/spacing_large">
+                                    android:text="Pay Bills"
 
-                                    <RelativeLayout
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp">
+                                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                                    android:textColor="@color/indigo_900"
+                                    app:fontFamily="sans-serif-medium" />
 
-                                        <ImageView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_centerInParent="true"
-                                            android:tint="@color/grey_10"
-                                            app:srcCompat="@drawable/shape_circle" />
+                            </LinearLayout>
 
-                                        <ImageView
-                                            android:layout_width="15dp"
-                                            android:layout_height="15dp"
-                                            android:layout_centerInParent="true"
-                                            android:rotation="180"
-                                            android:tint="@color/grey_40"
-                                            app:srcCompat="@drawable/ic_arrow_downward" />
-
-                                    </RelativeLayout>
-
-                                    <View
-                                        android:layout_width="@dimen/spacing_mlarge"
-                                        android:layout_height="0dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Send Money"
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                        android:textColor="@color/indigo_900"
-                                        app:fontFamily="sans-serif-medium" />
-
-                                </LinearLayout>
-
-                            </androidx.cardview.widget.CardView>
-
-                            <View
-                                android:layout_width="@dimen/spacing_small"
-                                android:layout_height="0dp" />
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:cardCornerRadius="6dp"
-                                app:cardElevation="2dp"
-                                android:id="@+id/payBills"
-                                app:cardUseCompatPadding="true">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:orientation="horizontal"
-                                    android:padding="@dimen/spacing_large">
-
-                                    <RelativeLayout
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp">
-
-                                        <ImageView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:layout_centerInParent="true"
-                                            android:tint="@color/grey_10"
-                                            app:srcCompat="@drawable/shape_circle" />
-
-                                        <ImageView
-                                            android:layout_width="15dp"
-                                            android:layout_height="15dp"
-                                            android:layout_centerInParent="true"
-                                            android:tint="@color/grey_40"
-                                            app:srcCompat="@drawable/img_money" />
-
-                                    </RelativeLayout>
-
-                                    <View
-                                        android:layout_width="@dimen/spacing_mlarge"
-                                        android:layout_height="0dp" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Pay Bills"
-
-                                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                        android:textColor="@color/indigo_900"
-                                        app:fontFamily="sans-serif-medium" />
-
-                                </LinearLayout>
-
-                            </androidx.cardview.widget.CardView>
-
-                        </LinearLayout>
-
-                               <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                         <View
-                                android:layout_width="@dimen/spacing_small"
-                                android:layout_height="0dp" />
-
-
-
-                        </LinearLayout>
-
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_middle"
-                            android:layout_marginBottom="@dimen/spacing_medium"
-                            android:gravity="center"
-                            android:text="Transaction History"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-                            android:textColor="@color/grey_40"
-                            app:fontFamily="sans-serif-medium" />
-
-
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/recycler"
-                            tools:listitem="@layout/item_transaction"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/spacing_large" />
+                        </androidx.cardview.widget.CardView>
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/spacing_small"
+                            android:layout_height="0dp" />
+
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_middle"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:gravity="center"
+                        android:text="Transaction History"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                        android:textColor="@color/grey_40"
+                        app:fontFamily="sans-serif-medium" />
+
+
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/nested_scroll_view_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        android:scrollingCache="true">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/transactionsRecycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_transaction" />
+                    </androidx.core.widget.NestedScrollView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_large" />
+
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
@@ -283,7 +290,6 @@
                 android:background="@drawable/bg_gradient_very_soft" />
 
         </RelativeLayout>
-
 
 
     </LinearLayout>

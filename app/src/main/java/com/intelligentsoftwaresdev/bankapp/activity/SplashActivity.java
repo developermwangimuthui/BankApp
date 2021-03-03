@@ -15,7 +15,7 @@ import com.intelligentsoftwaresdev.bankapp.R;
 public class SplashActivity extends AppCompatActivity {
 
     ProgressBar splashProgress;
-    int SPLASH_TIME = 2000; //This is 3 seconds
+    int SPLASH_TIME = 1000; //This is 1 seconds
     private static final String TAG = "Splash";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

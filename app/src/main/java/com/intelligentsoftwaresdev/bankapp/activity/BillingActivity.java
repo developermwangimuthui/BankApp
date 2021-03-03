@@ -23,12 +23,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.intelligentsoftwaresdev.bankapp.R;
 import com.intelligentsoftwaresdev.bankapp.databinding.ActivityBillingBinding;
+import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -108,11 +110,14 @@ public class BillingActivity extends AppCompatActivity {
     }
 
     private void paybill() {
-        String recieverAccountNumber = b.accountNumber.getText().toString().trim();
+        String accountNumber = b.accountNumber.getText().toString().trim();
         String company = b.company.getText().toString().trim();
         String referenceNote = b.referenceNote.getText().toString().trim();
         String amount = b.amount.getText().toString().trim();
-        if (TextUtils.isEmpty(recieverAccountNumber)) {
+        String type = "Billing";
+        String bank = "";
+        String beneficiary = "";
+        if (TextUtils.isEmpty(accountNumber)) {
             b.accountNumber.setError("Account Number is required");
         } else if (TextUtils.isEmpty(amount)) {
             b.amount.setError("Amount is required");
@@ -121,46 +126,69 @@ public class BillingActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(company)) {
             b.company.setError("Company is Required");
         } else {
-            DocumentReference documentReference = db.collection("transactions").document(mAuth.getUid());
-            Map<String, Object> transaction = new HashMap<>();
-            transaction.put("type", "billing");
-            transaction.put("amount", amount);
-            transaction.put("company", company);
-            transaction.put("recieverAccountNumber", recieverAccountNumber);
-            transaction.put("referenceNote", referenceNote);
-            documentReference.set(transaction).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-
-                    Toast.makeText(BillingActivity.this, "Kindly Authorize To Pay", Toast.LENGTH_SHORT).show();
-                    updateBalance(amount);
-                }
-            });
+            updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
 
         }
 
 
     }
 
-    private void updateBalance(String amount) {
-//convert the Strings to
+    private void addDataToFirestore(String type, String amount, String bank, String accountNumber, String company, String
+            referenceNote,String beneficiary) {
+        CollectionReference collectionReference = db.collection("allTransaction").document(mAuth.getUid()).collection("transactions");
+        // creating a collection reference
+        // for our Firebase Firetore database.
+        // adding our data to our courses object class.
+        TransactionModel transactions = new TransactionModel(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
 
+        // below method is use to add data to Firebase Firestore.
+        collectionReference.add(transactions).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                // after the data addition is successful
+                // we are displaying a success toast message.
+//                updateBalance(amount);
+
+                Toast.makeText(BillingActivity.this, "Kindly Verify to Continue", Toast.LENGTH_SHORT).show();
+
+//                progress_bar.setVisibility(View.GONE);
+                startActivity(new Intent(BillingActivity.this, VerificationActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // this method is called when the data addition process is failed.
+                // displaying a toast message when data addition is failed.
+                Toast.makeText(BillingActivity.this, "Something Went Wrong\n" + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateBalance(String type,String amount,String bank,String accountNumber,String company,String referenceNote,String beneficiary) {
+//convert the Strings to
         Log.e(TAG, "Balance: " + balance);
-        Integer intBalance = Integer.parseInt(balance);
-        Integer inAmount = Integer.parseInt(amount);
-        Integer indailyLimit = Integer.parseInt(dailyLimit);
+        double intBalance = Double.parseDouble(balance);
+        double inAmount = Double.parseDouble(amount);
+        double indailyLimit = Double.parseDouble(dailyLimit);
         Log.e(TAG, "DailyLimit: " + indailyLimit);
         Log.e(TAG, "Amount: " + inAmount);
-        if( inAmount>= indailyLimit){
+        if (inAmount >= indailyLimit) {
 
             Toast.makeText(this, "You cannot Transact as you have exceeded your Daily Limit", Toast.LENGTH_SHORT).show();
-        }else{
+            Log.e(TAG, "updateBalance: Transaction LimitExceeded");
+            return;
+        } else {
             if (inAmount > intBalance) {
+                Log.e(TAG, "updateBalance: Insufficient Balance");
                 Toast.makeText(this, "You have Insufficient Balance", Toast.LENGTH_LONG).show();
+                return;
             } else {
 //            computations
-                Integer intnewbalance = intBalance - inAmount;
-                String strNewBalance = intnewbalance.toString();
+                double intnewbalance = intBalance - inAmount;
+                double twoDPnewbalance = Math.floor(intnewbalance * 100) / 100;
+                String strNewBalance = String.valueOf(twoDPnewbalance);
+                Log.e(TAG, "updateBalance: NewBalance"+strNewBalance);
 //            update Balance in Firestore
                 Map<String, Object> user = new HashMap<>();
                 user.put("balance", strNewBalance);
@@ -168,10 +196,9 @@ public class BillingActivity extends AppCompatActivity {
                         .set(user, SetOptions.merge());
                 Log.e(TAG, "New Balance: " + strNewBalance);
 
-                startActivity(new Intent(BillingActivity.this, VerificationActivity.class));
+                addDataToFirestore(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
             }
         }
-
 
 
 
@@ -221,6 +248,7 @@ public class BillingActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.account) {
             Toast.makeText(this, "Account", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(BillingActivity.this, AccountActivity.class));
+            finish();
 
         } else if (item.getItemId() == R.id.logout) {
             logout();

@@ -4,25 +4,37 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.intelligentsoftwaresdev.bankapp.R;
 import com.intelligentsoftwaresdev.bankapp.adapter.TransactionAdapter;
 import com.intelligentsoftwaresdev.bankapp.databinding.ActivityMainBinding;
-import com.intelligentsoftwaresdev.bankapp.models.Transaction;
+import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +45,15 @@ import utils.Tools;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding b;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String TAG = "";
     private String balance;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    List<Transaction> list = new ArrayList<>();
-    TransactionAdapter adapter;
+    private String accountNumber;
+
+    private RecyclerView courseRV;
+    List<TransactionModel> transactionModelList = new ArrayList<>();
+    private CollectionReference transactionsRef = db.collection("allTransaction").document(mAuth.getUid()).collection("transactions");
+    private TransactionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +62,43 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initButtonActions();
         getDataFirestore();
+        initRecyclerView();
 
+        adapter.setOnItemClickListener(new TransactionAdapter.OnitemClickListener() {
+            @Override
+            public void onIemClick(DocumentSnapshot documentSnapshot, int position) {
+                TransactionModel transactions = documentSnapshot.toObject(TransactionModel.class);
+                String id = documentSnapshot.getId();
+                String path = documentSnapshot.getReference().getPath();
+                Toast.makeText(MainActivity.this,
+                        "Position: " + position + " ID: " + id, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
+                intent.putExtra("documentID", id);
+                startActivity(intent);
+            }
+
+
+        });
     }
+
+
+    private void initRecyclerView() {
+        Log.e(TAG, "initRecyclerView: Called");
+        Query query = transactionsRef.orderBy("amount", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<TransactionModel> options = new FirestoreRecyclerOptions.Builder<TransactionModel>()
+                .setQuery(query, TransactionModel.class)
+                .build();
+        Log.e(TAG, "Options: "+options );
+
+        adapter = new TransactionAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.transactionsRecycler);
+//        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+
 
     private void initButtonActions() {
         b.sendMoney.setOnClickListener(new View.OnClickListener() {
@@ -109,9 +160,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //    Set Items in the User Interface;
-    private void initUI(String balance) {
+    private void initUI(String balance,String accountNumber) {
         Log.e(TAG, "initUI: Called");
-        b.balance.setText(balance);
+        b.balance.setText("RM "+balance);
+        b.accountNumber.setText(accountNumber);
 
     }
 
@@ -119,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     private void getDataFirestore() {
 
         DocumentReference docRef = db.collection("users").document(mAuth.getUid());
-        Log.e(TAG, "UserID"+mAuth.getUid());
+        Log.e(TAG, "UserID" + mAuth.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -129,8 +181,9 @@ public class MainActivity extends AppCompatActivity {
                     if (document.exists()) {
                         Map<String, Object> userMap = (Map<String, Object>) document.getData();
                         balance = (String) userMap.get("balance");
-                        Log.e(TAG, "Balance: "+balance );
-                        initUI(balance);
+                        accountNumber = (String) userMap.get("accountNumber");
+                        Log.e(TAG, "Balance: " + balance);
+                        initUI(balance,accountNumber);
 
                     } else {
                         Log.e(TAG, "No such document");
@@ -142,13 +195,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+        Log.e(TAG, "onStart: AdapterListening");
+    }
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+        Log.e(TAG, "onStop: AdapterNotListening");
+    }
 }
 
 

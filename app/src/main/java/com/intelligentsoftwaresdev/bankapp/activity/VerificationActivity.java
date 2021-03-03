@@ -190,7 +190,7 @@ public class VerificationActivity extends AppCompatActivity {
                         phoneNumber = (String) userMap.get("phone");
                         Log.e(TAG, "Balance: " + phoneNumber);
 
-                        startPhoneNumberVerification(phoneNumber);
+//                        startPhoneNumberVerification(phoneNumber);
                     } else {
                         Log.e(TAG, "No such document");
                     }

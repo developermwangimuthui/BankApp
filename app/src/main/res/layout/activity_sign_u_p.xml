@@ -94,21 +94,50 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                 android:textColor="@color/blue_grey_200" />
-
-            <com.google.android.material.textfield.TextInputEditText
-
-
-                android:id="@+id/sign_in_phone"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="-4dp"
-                android:layout_marginRight="-4dp"
-                android:inputType="phone"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/blue_grey_800"
-                android:theme="@style/EditText.Green" />    <View
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/countryCode"
+                    style="@style/EditText.Flat.Grey"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:focusable="false"
+
+
+                    android:hint="+60"
+                    android:inputType="phone"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle" />
+
+                <EditText
+                    android:id="@+id/sign_in_phone"
+                    style="@style/EditText.Flat.Grey"
+                    android:layout_width="300dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:background="@drawable/edit_text_round_bg_white"
+                    android:hint="010257308"
+                    android:inputType="phone"
+                    android:paddingLeft="@dimen/spacing_middle"
+                    android:paddingRight="@dimen/spacing_middle" />
+
+
+                <View
+                    android:layout_width="@dimen/spacing_large"
+                    android:layout_height="0dp" />
+
+
+            </LinearLayout>
+
+
+
+   <View
                 android:layout_width="0dp"
                 android:layout_height="@dimen/spacing_medium" />
 
@@ -134,31 +163,31 @@
                 android:textColor="@color/blue_grey_800"
                 android:theme="@style/EditText.Green" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="@dimen/spacing_xsmall" />
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="@dimen/spacing_xsmall" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Account Number"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/blue_grey_200" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Account Number"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+<!--                android:textColor="@color/blue_grey_200" />-->
 
-            <com.google.android.material.textfield.TextInputEditText
+<!--            <com.google.android.material.textfield.TextInputEditText-->
 
-                android:id="@+id/sign_in_accountNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="-4dp"
-                android:layout_marginRight="-4dp"
-                android:inputType="number"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/blue_grey_800"
-                android:theme="@style/EditText.Green" />
+<!--                android:id="@+id/sign_in_accountNumber"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="-4dp"-->
+<!--                android:layout_marginRight="-4dp"-->
+<!--                android:inputType="number"-->
+<!--                android:maxLength="50"-->
+<!--                android:maxLines="1"-->
+<!--                android:singleLine="true"-->
+<!--                android:textColor="@color/blue_grey_800"-->
+<!--                android:theme="@style/EditText.Green" />-->
 
             <View
                 android:layout_width="0dp"
@@ -252,6 +281,31 @@
             <com.google.android.material.textfield.TextInputEditText
 
                 android:id="@+id/sign_in_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:inputType="textPassword"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/blue_grey_800"
+                android:theme="@style/EditText.Green" />
+   <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/spacing_medium" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+                android:textColor="@color/blue_grey_200" />
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/cpassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-4dp"

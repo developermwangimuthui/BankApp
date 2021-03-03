@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BankApp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.TransactionDetailsActivity"></activity>
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity android:name=".activity.FingerPrintActivity" />
         <activity android:name=".activity.SplashActivity">

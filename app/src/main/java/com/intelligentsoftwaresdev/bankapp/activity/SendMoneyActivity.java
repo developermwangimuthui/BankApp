@@ -15,19 +15,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.intelligentsoftwaresdev.bankapp.R;
 import com.intelligentsoftwaresdev.bankapp.databinding.ActivityMoneySendBinding;
+import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +49,15 @@ public class SendMoneyActivity extends AppCompatActivity {
     private String balance;
     private String dailyLimit;
 
+    private ProgressBar progress_bar;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         b = DataBindingUtil.setContentView(this, R.layout.activity_money_send);
+
+        progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
         initComponent();
         initToolbar();
         initButtonActions();
@@ -59,6 +69,8 @@ public class SendMoneyActivity extends AppCompatActivity {
         b.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                progress_bar.setVisibility(View.VISIBLE);
                 sendMoney();
             }
         });
@@ -113,51 +125,86 @@ public class SendMoneyActivity extends AppCompatActivity {
         String amount = b.amount.getText().toString().trim();
         String accountNumber = b.accountNumber.getText().toString().trim();
         String bank = b.bank.getText().toString().trim();
+        String referenceNote = b.referenceNote.getText().toString().trim();
+        String beneficiary = b.beneficiary.getText().toString().trim();
+        String type = "Fund Transfer";
+        String company = "";
+
+
         if (TextUtils.isEmpty(amount)) {
             b.amount.setError("Amount is required");
         } else if (TextUtils.isEmpty(bank)) {
             b.bank.setError("Bank  is required");
-        } else if (TextUtils.isEmpty(bank)) {
+        } else if (TextUtils.isEmpty(referenceNote)) {
+            b.referenceNote.setError("Reference Note  is required");
+        } else if (TextUtils.isEmpty(accountNumber)) {
             b.accountNumber.setError("Account Number is required");
+        } else if (TextUtils.isEmpty(beneficiary)) {
+            b.beneficiary.setError("Enter Beneficiary");
         } else {
-            DocumentReference documentReference = db.collection("transactions").document(mAuth.getUid());
-            Map<String, Object> transaction = new HashMap<>();
-            transaction.put("type", "sendmoney");
-            transaction.put("amount", amount);
-            transaction.put("bank", bank);
-            transaction.put("accountNumber", accountNumber);
-            documentReference.set(transaction).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-
-                    updateBalance(amount);
-                }
-            });
+            updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
 
         }
 
 
     }
 
+    private void addDataToFirestore(String type, String amount, String bank, String accountNumber, String company, String
+            referenceNote,String beneficiary) {
+        CollectionReference collectionReference = db.collection("allTransaction").document(mAuth.getUid()).collection("transactions");
+        // creating a collection reference
+        // for our Firebase Firetore database.
+        // adding our data to our courses object class.
+        TransactionModel transactions = new TransactionModel(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
 
-    private void updateBalance(String amount) {
+        // below method is use to add data to Firebase Firestore.
+        collectionReference.add(transactions).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                // after the data addition is successful
+                // we are displaying a success toast message.
+//                updateBalance(amount);
+
+                Toast.makeText(SendMoneyActivity.this, "Kindly Verify to Continue", Toast.LENGTH_SHORT).show();
+
+                progress_bar.setVisibility(View.GONE);
+                startActivity(new Intent(SendMoneyActivity.this, VerificationActivity.class));
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // this method is called when the data addition process is failed.
+                // displaying a toast message when data addition is failed.
+                Toast.makeText(SendMoneyActivity.this, "Something Went Wrong\n" + e, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateBalance(String type,String amount,String bank,String accountNumber,String company,String referenceNote,String beneficiary) {
 //convert the Strings to
-
         Log.e(TAG, "Balance: " + balance);
-        Integer intBalance = Integer.parseInt(balance);
-        Integer inAmount = Integer.parseInt(amount);
-        Integer indailyLimit = Integer.parseInt(dailyLimit);
+        double intBalance = Double.parseDouble(balance);
+        double inAmount = Double.parseDouble(amount);
+        double indailyLimit = Double.parseDouble(dailyLimit);
         Log.e(TAG, "DailyLimit: " + indailyLimit);
         Log.e(TAG, "Amount: " + inAmount);
-        if( inAmount>= indailyLimit){
+        if (inAmount >= indailyLimit) {
+
             Toast.makeText(this, "You cannot Transact as you have exceeded your Daily Limit", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "updateBalance: Transaction LimitExceeded");
+            return;
         } else {
             if (inAmount > intBalance) {
+                Log.e(TAG, "updateBalance: Insufficient Balance");
                 Toast.makeText(this, "You have Insufficient Balance", Toast.LENGTH_LONG).show();
+                return;
             } else {
 //            computations
-                Integer intnewbalance = intBalance - inAmount;
-                String strNewBalance = intnewbalance.toString();
+                double intnewbalance = intBalance - inAmount;
+                double twoDPnewbalance = Math.floor(intnewbalance * 100) / 100;
+                String strNewBalance = String.valueOf(twoDPnewbalance);
+                Log.e(TAG, "updateBalance: NewBalance"+strNewBalance);
 //            update Balance in Firestore
                 Map<String, Object> user = new HashMap<>();
                 user.put("balance", strNewBalance);
@@ -165,9 +212,10 @@ public class SendMoneyActivity extends AppCompatActivity {
                         .set(user, SetOptions.merge());
                 Log.e(TAG, "New Balance: " + strNewBalance);
 
-                startActivity(new Intent(SendMoneyActivity.this, VerificationActivity.class));
+                addDataToFirestore(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
             }
         }
+
 
 
     }
@@ -220,6 +268,7 @@ public class SendMoneyActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.account) {
             Toast.makeText(this, "Account", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SendMoneyActivity.this, AccountActivity.class));
+            finish();
 
         } else if (item.getItemId() == R.id.logout) {
             logout();
