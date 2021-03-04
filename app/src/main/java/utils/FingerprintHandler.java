@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
-import com.intelligentsoftwaresdev.bankapp.activity.MainActivity;
+import com.IRAKYAT.bankapp.activity.MainActivity;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {

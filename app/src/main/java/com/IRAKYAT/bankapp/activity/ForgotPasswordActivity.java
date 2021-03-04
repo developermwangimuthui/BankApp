@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityForgotPasswordBinding;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityForgotPasswordBinding;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
     ActivityForgotPasswordBinding b;

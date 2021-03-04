@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.intelligentsoftwaresdev.bankapp">
+    package="com.IRAKYAT.bankapp">
 
     <uses-feature
         android:name="android.hardware.fingerprint"
@@ -17,23 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BankApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.TransactionDetailsActivity"></activity>
-        <activity android:name=".activity.ForgotPasswordActivity" />
-        <activity android:name=".activity.FingerPrintActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="com.IRAKYAT.bankapp.activity.Verification2Activity"></activity>
+        <activity android:name="com.IRAKYAT.bankapp.activity.TransactionDetailsActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.ForgotPasswordActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.FingerPrintActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.AccountActivity" />
-        <activity android:name=".activity.BillingActivity" />
-        <activity android:name=".activity.SendMoneyActivity" />
-        <activity android:name=".activity.VerificationActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.SignUpActivity" />
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.AccountActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.BillingActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.SendMoneyActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.VerificationActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.LoginActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.SignUpActivity" />
+        <activity android:name="com.IRAKYAT.bankapp.activity.MainActivity" />
     </application>
 
 </manifest>

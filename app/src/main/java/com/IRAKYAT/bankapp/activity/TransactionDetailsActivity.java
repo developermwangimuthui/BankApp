@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityTransactionDetailsBinding;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityTransactionDetailsBinding;
 
 import java.util.Map;
 

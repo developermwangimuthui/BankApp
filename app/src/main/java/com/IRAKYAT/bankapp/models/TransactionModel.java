@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.models;
+package com.IRAKYAT.bankapp.models;
 
 public class TransactionModel {
     String type;

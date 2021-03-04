@@ -1,16 +1,14 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,8 +27,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityVerificationBinding;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityVerificationBinding;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -290,38 +288,39 @@ public class VerificationActivity extends AppCompatActivity {
             public void onSuccess(AuthResult authResult) {
                 Toast.makeText(VerificationActivity.this, "OTP Verified", Toast.LENGTH_SHORT).show();
                 // send to dashboard.
-                startActivity(new Intent(VerificationActivity.this, MainActivity.class));
-                finish();
+
             }
         });
-//        getmAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithCredential:success");
-//
-//                            FirebaseUser user = task.getResult().getUser();
-//
-//                            // [START_EXCLUDE]
-//                            Toast.makeText(VerificationActivity.this, "SignIn Succesfull", Toast.LENGTH_SHORT).show();
-//                            // [END_EXCLUDE]
-//                        } else {
-//                            // Sign in failed, display a message and update the UI
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-//                                // The verification code entered was invalid
-//                                // [START_EXCLUDE silent]
-//                                Toast.makeText(VerificationActivity.this, "Invalid Code", Toast.LENGTH_SHORT).show();
-//                                // [END_EXCLUDE]
-//                            }
-//                            // [START_EXCLUDE silent]
-//                            // Update UI
-//                            // [END_EXCLUDE]
-//                        }
-//                    }
-//                });
+        getmAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+
+                            FirebaseUser user = task.getResult().getUser();
+
+                            // [START_EXCLUDE]
+                            Toast.makeText(VerificationActivity.this, "Verification Succesfull", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(VerificationActivity.this, MainActivity.class));
+                            finish();
+                            // [END_EXCLUDE]
+                        } else {
+                            // Sign in failed, display a message and update the UI
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The verification code entered was invalid
+                                // [START_EXCLUDE silent]
+                                Toast.makeText(VerificationActivity.this, "Invalid Code", Toast.LENGTH_SHORT).show();
+                                // [END_EXCLUDE]
+                            }
+                            // [START_EXCLUDE silent]
+                            // Update UI
+                            // [END_EXCLUDE]
+                        }
+                    }
+                });
     }
 
 }

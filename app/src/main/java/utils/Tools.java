@@ -5,7 +5,7 @@ import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.intelligentsoftwaresdev.bankapp.R;
+import com.IRAKYAT.bankapp.R;
 
 public class Tools {
     public static void setSystemBarColor(Activity act) {

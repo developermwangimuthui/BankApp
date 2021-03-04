@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.intelligentsoftwaresdev.bankapp.R;
+import com.IRAKYAT.bankapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 

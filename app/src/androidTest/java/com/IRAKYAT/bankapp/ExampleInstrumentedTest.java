@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp;
+package com.IRAKYAT.bankapp;
 
 import android.content.Context;
 

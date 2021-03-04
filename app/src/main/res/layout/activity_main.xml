@@ -161,7 +161,7 @@
                                 </RelativeLayout>
 
                                 <View
-                                    android:layout_width="@dimen/spacing_mlarge"
+                                    android:layout_width="@dimen/spacing_large"
                                     android:layout_height="0dp" />
 
                                 <TextView
@@ -217,7 +217,7 @@
                                 </RelativeLayout>
 
                                 <View
-                                    android:layout_width="@dimen/spacing_mlarge"
+                                    android:layout_width="@dimen/spacing_large"
                                     android:layout_height="0dp" />
 
                                 <TextView

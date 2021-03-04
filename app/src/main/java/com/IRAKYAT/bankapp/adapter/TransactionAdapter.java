@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.adapter;
+package com.IRAKYAT.bankapp.adapter;
 
 
 import android.util.Log;
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.models.TransactionModel;
 
 
 public class TransactionAdapter extends FirestoreRecyclerAdapter<TransactionModel, TransactionAdapter.TransactionHolder> {

@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import android.app.KeyguardManager;
 import android.content.pm.PackageManager;
@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.intelligentsoftwaresdev.bankapp.R;
+import com.IRAKYAT.bankapp.R;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;

@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -27,15 +27,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityMoneySendBinding;
-import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityMoneySendBinding;
+import com.IRAKYAT.bankapp.models.TransactionModel;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,10 +140,46 @@ public class SendMoneyActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(beneficiary)) {
             b.beneficiary.setError("Enter Beneficiary");
         } else {
-            updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
+            Intent intent = new Intent(SendMoneyActivity.this, Verification2Activity.class);
+            intent.putExtra("type", type);
+            intent.putExtra("amount", amount);
+            intent.putExtra("bank", bank);
+            intent.putExtra("accountNumber", accountNumber);
+            intent.putExtra("company", company);
+            intent.putExtra("referenceNote", referenceNote);
+            intent.putExtra("beneficiary", beneficiary);
+            startActivityForResult(intent, 1);
+
+            Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
 
         }
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: Called");
+        if (resultCode == RESULT_OK) {
+            Log.e(TAG, "onActivityResult: Result Okay");
+
+            if (data != null) {
+                Log.e(TAG, "onActivityResult: data " + data);
+                String type = data.getStringExtra("type");
+                String amount = data.getStringExtra("amount");
+                String bank = data.getStringExtra("bank");
+                String accountNumber = data.getStringExtra("accountNumber");
+                String company = data.getStringExtra("company");
+                String referenceNote = data.getStringExtra("referenceNote");
+                String beneficiary = data.getStringExtra("beneficiary");
+                updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
+            }
+        }
+        if (resultCode == RESULT_CANCELED) {
+            Log.e(TAG, "onActivityResult: Result Cancelled");
+            Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -171,10 +204,10 @@ public class SendMoneyActivity extends AppCompatActivity {
                 // we are displaying a success toast message.
 //                updateBalance(amount);
 
-                Toast.makeText(SendMoneyActivity.this, "Kindly Verify to Continue", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SendMoneyActivity.this, "Money Sent Succesfully", Toast.LENGTH_SHORT).show();
 
-                progress_bar.setVisibility(View.GONE);
-                startActivity(new Intent(SendMoneyActivity.this, VerificationActivity.class));
+//                startActivity(new Intent(SendMoneyActivity.this, MainActivity.class));
+//                progress_bar.setVisibility(View.GONE);
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {

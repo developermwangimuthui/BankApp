@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,9 +27,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityBillingBinding;
-import com.intelligentsoftwaresdev.bankapp.models.TransactionModel;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityBillingBinding;
+import com.IRAKYAT.bankapp.models.TransactionModel;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -96,7 +95,7 @@ public class BillingActivity extends AppCompatActivity {
 
     private void showCompanyDialog(final View v) {
         final String[] array = new String[]{
-                "TNB Malaysia", "TNB Malaysia", "Air Selangor", "Digi", "Umobile", "Maxis", "Astro", "Cuckoo", "Coway"
+                "TNB Malaysia", "Air Selangor", "Digi", "Umobile", "Maxis", "Astro", "Cuckoo", "Coway"
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Bank");
@@ -127,13 +126,48 @@ public class BillingActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(company)) {
             b.company.setError("Company is Required");
         } else {
-            updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
+            Intent intent = new Intent(BillingActivity.this, Verification2Activity.class);
+            intent.putExtra("type", type);
+            intent.putExtra("amount", amount);
+            intent.putExtra("bank", bank);
+            intent.putExtra("accountNumber", accountNumber);
+            intent.putExtra("company", company);
+            intent.putExtra("referenceNote", referenceNote);
+            intent.putExtra("beneficiary", beneficiary);
+            startActivityForResult(intent, 1);
+
+            Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
 
         }
 
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: Called");
+        if (resultCode == RESULT_OK) {
+            Log.e(TAG, "onActivityResult: Result Okay");
+
+            if (data != null) {
+                Log.e(TAG, "onActivityResult: data " + data);
+                String type = data.getStringExtra("type");
+                String amount = data.getStringExtra("amount");
+                String bank = data.getStringExtra("bank");
+                String accountNumber = data.getStringExtra("accountNumber");
+                String company = data.getStringExtra("company");
+                String referenceNote = data.getStringExtra("referenceNote");
+                String beneficiary = data.getStringExtra("beneficiary");
+                updateBalance(type, amount, bank, accountNumber, company, referenceNote,beneficiary);
+            }
+        }
+        if (resultCode == RESULT_CANCELED) {
+            Log.e(TAG, "onActivityResult: Result Cancelled");
+            Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+        }
+
+    }
     private void addDataToFirestore(String type, String amount, String bank, String accountNumber, String company, String
             referenceNote,String beneficiary) {
         CollectionReference collectionReference = db.collection("allTransaction").document(mAuth.getUid()).collection("transactions");
@@ -155,9 +189,7 @@ public class BillingActivity extends AppCompatActivity {
                 // we are displaying a success toast message.
 //                updateBalance(amount);
 
-                Toast.makeText(BillingActivity.this, "Kindly Verify to Continue", Toast.LENGTH_SHORT).show();
-
-                startActivity(new Intent(BillingActivity.this, VerificationActivity.class));
+//                startActivity(new Intent(BillingActivity.this, MainActivity.class));
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {

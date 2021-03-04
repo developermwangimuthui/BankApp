@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,23 +11,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivitySignUPBinding;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivitySignUPBinding;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import utils.Tools;
 
@@ -78,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
         String balance = "10000.00";
         String accountNumber = String.valueOf(number);
         String username = b.signInUsername.getText().toString().trim();
-        String phone ="+60"+b.signInPhone.getText().toString().trim();
+        String phone = "+60" + b.signInPhone.getText().toString().trim();
 //        String accountNumber = b.signInAccountNumber.getText().toString().trim();
         String nric = b.signInNric.getText().toString().trim();
         String nickname = b.signInNickname.getText().toString().trim();
@@ -153,7 +149,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Log.e(TAG, "onSuccess: User created succesfully");
+                                                    Log.e(TAG, "onSuccess: Phone "+phone);
                                                     Toast.makeText(SignUpActivity.this, "Account  Created Succesfully", Toast.LENGTH_SHORT).show();
 
                                                 }
@@ -162,13 +158,15 @@ public class SignUpActivity extends AppCompatActivity {
 
                                             Log.e(TAG, "createUserWithEmail:success");
                                             FirebaseUser thisuser = mAuth.getCurrentUser();
-                                            updateUI(thisuser);
+                                            String message = "Success";
+                                            updateUI(thisuser, message);
                                             startActivity(new Intent(SignUpActivity.this, VerificationActivity.class));
                                         } else {
                                             // If sign in fails, display a message to the user.
                                             Log.e(TAG, "createUserWithEmail:failure", task.getException());
                                             Toast.makeText(SignUpActivity.this, "Email Already In Use", Toast.LENGTH_SHORT).show();
-                                            updateUI(null);
+                                            String message = "Error";
+                                            updateUI(null, message);
                                         }
 
                                         // ...
@@ -210,14 +208,23 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     //Change UI according to user data.
-    public void updateUI(FirebaseUser user) {
+    public void updateUI(FirebaseUser user, String message) {
 
         if (user != null) {
             Toast.makeText(this, "Signed In successfully", Toast.LENGTH_LONG).show();
             startActivity(new Intent(this, VerificationActivity.class));
 
         } else {
-            Toast.makeText(this, "Email Already In Use", Toast.LENGTH_LONG).show();
+            if (message.equals("Start")) {
+
+                Toast.makeText(this, "Kindly Register!", Toast.LENGTH_LONG).show();
+            }else if(message.equals("Error")){
+
+                b.signInEmail.setError("Email already taken !");
+                b.signInEmail.requestFocus();
+                Toast.makeText(this, "Email already taken", Toast.LENGTH_LONG).show();
+
+            }
         }
 
     }
@@ -227,7 +234,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        String message = "Start";
+        updateUI(currentUser, message);
     }
 
 

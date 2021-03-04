@@ -1,4 +1,4 @@
-package com.intelligentsoftwaresdev.bankapp.activity;
+package com.IRAKYAT.bankapp.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,8 +24,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.intelligentsoftwaresdev.bankapp.R;
-import com.intelligentsoftwaresdev.bankapp.databinding.ActivityAccountBinding;
+import com.IRAKYAT.bankapp.R;
+import com.IRAKYAT.bankapp.databinding.ActivityAccountBinding;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,13 +48,17 @@ public class AccountActivity extends AppCompatActivity {
         initToolbar();
         getUserFirestore();
         initButtons();
+
+
+
+
     }
 
     private void initButtons() {
 
         b.emailSignInButton.setOnClickListener(v -> {
             String email = b.email.getText().toString().trim();
-            String phone = b.phone.getText().toString().trim();
+            String phone = "+60"+b.phone.getText().toString().trim();
             String dailyLimit = b.limit.getText().toString().trim();
             String password = b.password.getText().toString().trim();
             String cpassword = b.cpassword.getText().toString().trim();
@@ -69,56 +73,60 @@ public class AccountActivity extends AppCompatActivity {
                 b.limit.setError("Choose Your Daily Limit");
                 b.limit.requestFocus();
             } else {
+                Intent intent = new Intent(AccountActivity.this, Verification2Activity.class);
+                intent.putExtra("password", password);
+                intent.putExtra("cpassword", cpassword);
+                intent.putExtra("phone", phone);
+                intent.putExtra("dailyLimit", dailyLimit);
+                intent.putExtra("email", email);
+                startActivityForResult(intent, 1);
 
-                if (!password.isEmpty() && !cpassword.isEmpty()) {
-                    if (password.equals(cpassword)) {
-                        float passStrength = getRating(password);
-                        Log.e(TAG, "password Strength " + passStrength);
-                        if (passStrength < 4.0) {
+                    Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
 
-                            b.password.setError("Kindly Use a Password with Alphanumerics and Special Characters");
+            }
 
-                            Toast.makeText(this, "Kindly Use a Password with Alphanumerics and Special Characters", Toast.LENGTH_LONG).show();
-                        } else {
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            user.updateEmail(email)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.e(TAG, "User email address updated.");
-                                            }
-                                        }
-                                    });
-                            user.updatePassword(password)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.e(TAG, "Password Updated");
-                                            }
-                                        }
-                                    });
-                            //Updating a user Data Firestore
-                            Map<String, Object> updatedUser = new HashMap<>();
-                            updatedUser.put("email", email);
-                            updatedUser.put("dailyLimit", dailyLimit);
-                            updatedUser.put("phone", phone);
-                            db.collection("users").document(mAuth.getUid())
-                                    .set(updatedUser, SetOptions.merge());
-                            updateUI(email, phone, dailyLimit);
 
-                            Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(AccountActivity.this, VerificationActivity.class));
-                            finish();
-                        }
+        });
+    }
 
-                    }else{
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e(TAG, "onActivityResult: Called");
+        if (resultCode == RESULT_OK) {
+            Log.e(TAG, "onActivityResult: Result Okay");
 
-                        Toast.makeText(this, "Passwords Do not Match", Toast.LENGTH_LONG).show();
-                        return;
-                    }
+            if (data != null) {
+                Log.e(TAG, "onActivityResult: data " + data);
+                String password = data.getStringExtra("password");
+                String cpassword = data.getStringExtra("cpassword");
+                String phone = data.getStringExtra("phone");
+                String dailyLimit = data.getStringExtra("dailyLimit");
+                String email = data.getStringExtra("email");
+                waitingForResult(password, cpassword, phone, dailyLimit, email);
+            }
+        }
+        if (resultCode == RESULT_CANCELED) {
+            Log.e(TAG, "onActivityResult: Result Cancelled");
+            Toast.makeText(this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+        }
 
+    }
+
+
+    private void waitingForResult(String password, String cpassword, String phone, String dailyLimit, String email) {
+
+        Log.e(TAG, "waitingForResult: Called" + email);
+
+        if (!password.isEmpty() && !cpassword.isEmpty()) {
+            if (password.equals(cpassword)) {
+                float passStrength = getRating(password);
+                Log.e(TAG, "password Strength " + passStrength);
+                if (passStrength < 4.0) {
+
+                    b.password.setError("Kindly Use a Password with Alphanumerics and Special Characters");
+
+                    Toast.makeText(this, "Kindly Use a Password with Alphanumerics and Special Characters", Toast.LENGTH_LONG).show();
                 } else {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     user.updateEmail(email)
@@ -130,7 +138,15 @@ public class AccountActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
+                    user.updatePassword(password)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.e(TAG, "Password Updated");
+                                    }
+                                }
+                            });
                     //Updating a user Data Firestore
                     Map<String, Object> updatedUser = new HashMap<>();
                     updatedUser.put("email", email);
@@ -139,16 +155,44 @@ public class AccountActivity extends AppCompatActivity {
                     db.collection("users").document(mAuth.getUid())
                             .set(updatedUser, SetOptions.merge());
                     updateUI(email, phone, dailyLimit);
-                    Toast.makeText(this, "Kindly Verify To Update", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(AccountActivity.this, VerificationActivity.class));
-                    finish();
 
+//                    startActivity(new Intent(AccountActivity.this, MainActivity.class));
+                    finish();
                 }
+
+            } else {
+
+                Toast.makeText(this, "Passwords Do not Match", Toast.LENGTH_LONG).show();
+                return;
             }
 
+        } else {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            user.updateEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.e(TAG, "User email address updated.");
+                            }
+                        }
+                    });
 
-        });
+            //Updating a user Data Firestore
+            Map<String, Object> updatedUser = new HashMap<>();
+            updatedUser.put("email", email);
+            updatedUser.put("dailyLimit", dailyLimit);
+            updatedUser.put("phone", phone);
+            db.collection("users").document(mAuth.getUid())
+                    .set(updatedUser, SetOptions.merge());
+            updateUI(email, phone, dailyLimit);
+
+//            startActivity(new Intent(AccountActivity.this, MainActivity.class));
+            finish();
+
+        }
     }
+
 
     private float getRating(String password) throws IllegalArgumentException {
         if (password == null) {
